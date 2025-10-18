@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-
+import {DUMMY_USERS} from '../jsonData/dummy-users';
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
@@ -7,5 +7,14 @@ import { Component, signal } from '@angular/core';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('task-management');
+  users = DUMMY_USERS;
+
+  selectUserId?:string;
+  get findUser(){
+    return this.users.find(user=>user.id === this.selectUserId);
+  }
+
+  selectedUser(id:string){
+    this.selectUserId = id;
+  }
 }
