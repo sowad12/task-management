@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { TaskData } from '../../jsonData/dummy-tasks';
-import { NewTaskModel, TaskModel } from './task.model';
+import { TaskModel } from './task.model';
+import { TasksService } from './tasks-service';
 
 @Component({
   selector: 'app-tasks',
@@ -9,14 +9,20 @@ import { NewTaskModel, TaskModel } from './task.model';
   styleUrl: './tasks.css'
 })
 export class Tasks {
-  userTasks:TaskModel[] = TaskData;
   isAddingTask = false;
+  userTasks:TaskModel[] = []; 
   @Input({ required: true}) user!: { id: string; name: string; avatar: string; } | undefined;
-  get selectedUserTasks() {
-    return this.user ? TaskData.filter(task => task.userId === this.user?.id) : [];
+  constructor(public tasksService: TasksService) {}
+
+  ngOnInit(): void {
+  this.userTasks = this.tasksService.getAllTasks();
+  }
+
+  get selectedUserTasks() {  
+     return this.tasksService.getTaskByUserId(this.user?.id);
   }
   onCompleteTask(id:string) {
-    this.userTasks = this.userTasks.filter(task => task.id !== id);
+    this.tasksService.removeTask(id);
   }
   onAddNewTask() {
     this.isAddingTask = true;
@@ -24,15 +30,8 @@ export class Tasks {
   onCancelNewTask() {
     this.isAddingTask = false;
   }
-  onSubmitTask(newTask:NewTaskModel) {
-
-    this.userTasks.push({
-      id: Date.now().toString(),
-      userId: this.user ? this.user.id : 'unknown',
-      title: newTask.title,
-      summary: newTask.summary,
-      dueDate: newTask.dueDate
-    });
-    this.isAddingTask = false;
-  }
+  // onSubmitTask(newTask:NewTaskModel) {
+  //   this.tasksService.SubmitTask(newTask,this.user ? this.user.id : undefined);
+  //   this.isAddingTask = false;
+  // }
 }

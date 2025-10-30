@@ -1,27 +1,23 @@
 import { NgModule, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Header } from './header/header';
 import { User } from './user/user';
-import { Tasks } from './tasks/tasks';
-import { Task } from './tasks/task/task';
-import { NewTask } from './tasks/new-task/new-task';
+import { TasksModule } from './tasks/tasks-module';
+import { SharedModule } from './shared/card/shared-module';
 
 @NgModule({
   declarations: [
     App,
     Header,
-    User,
-    Tasks,
-    Task,
-    NewTask
+    User
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    SharedModule,
+    TasksModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
